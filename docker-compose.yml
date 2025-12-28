@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # A. Servicio de Base de Datos (MySQL)
+  casino-db:
+    image: mysql:8.0
+    container_name: casino-db
+    restart: always
+    environment:
+      # Credenciales de conexión para Laravel
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    
+  # B. Servicio de Backend (PHP-FPM)
+  app: 
+    build:
+      context: ./casino-backend
+      dockerfile: Dockerfile
+    container_name: casino-backend
+    restart: always
+    volumes:
+      - ./casino-backend:/var/www/html
+      # Añade esta línea si tienes problemas de permisos/cache
+      # - ./casino-backend/storage:/var/www/html/storage
+    depends_on:
+      - casino-db
+
+  # C. Servicio de Nginx 
+  nginx-web:
+    image: nginx:alpine
+    container_name: casino-nginx
+    volumes:
+      # Copia el archivo de configuración de Nginx de tu proyecto anterior
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
+      # Monta el código fuente para que Nginx lo sirva
+      - ./casino-backend:/var/www/html 
+    ports:
+      # El Frontend espera la API en 9000 (Host) -> Puerto 80 de Nginx (Contenedor)
+      - "8000:80" 
+    depends_on:
+      - app # Nginx depende de que PHP-FPM (el servicio 'app') esté activo
+
+# D. Servicio de phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: casino-phpmyadmin
+    restart: always
+    ports:
+      - "8080:80" 
+    environment:
+      PMA_HOST: casino-db 
+      PMA_PORT: 3306 
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} 
+    depends_on:
+      - casino-db
+
+volumes:
+  dbdata:
