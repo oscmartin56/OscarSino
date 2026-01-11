@@ -8,7 +8,7 @@ docker compose up -d --build
 docker compose up -d (El -d es para que se ejecute en segundo plano y pueda seguir utilizando la terminal)
 
 # Utilizar para entrar a la parte del php artisan
-docker exec -it casino-backend ssh/bash
+docker exec -it casino-backend sh/ssh/bash
 
 # Crear las Migraciones
 php artisan migrate

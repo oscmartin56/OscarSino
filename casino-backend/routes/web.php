@@ -7,4 +7,3 @@ Route::get('/', function () {
     return response()->json(['message' => 'API is working', 'status' => 'success']);
 });
 
-Route::resource('users', UserController::class);

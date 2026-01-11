@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use App\Http\Requests\Post\CreateUserRequest;
 
 class UserController extends Controller
 {
@@ -26,20 +27,20 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        $validated = $request->validate([
-            'Name'=>'required|string|max:80',
-            'Dni'=>'required|string|max:9',
-            'Email'=>'required|string|max:200',
-            'Password'=>'required|string|max:40'
-        ]);
+        // $validated = $request->validate([
+        //     'Name'=>'required|string|max:80',
+        //     'Dni'=>'required|string|max:9',
+        //     'Email'=>'required|string|max:200',
+        //     'Password'=>'required|string|max:40'
+        // ]);                                          ESTO ESTÁ EN EL REQUEST/POST PORQUE SEPARAMOS LA LÓGICA DE LAS VALIDACIONES DEL ALMACENAMIENTO
 
         UserModel::create([
-            'Name'=> $request->input('Name'),
-            'Dni'=> $request->input('Dni'),
-            'Email'=> $request->input('Email'),
-            'Password'=> bcrypt($request->input('Password')),  //El bcrypt es para cifrar la contraseña antes de guardarla en la base de datos
+            'name'=> $request->input('name'),
+            'dni'=> $request->input('dni'),
+            'email'=> $request->input('email'),
+            'password'=> bcrypt($request->input('password')),  //El bcrypt es para cifrar la contraseña antes de guardarla en la base de datos
 
         ]);
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserModel extends Model
 {
     //Indicar cuál es la nueva clave primaria
-    protected $primaryKey = 'Dni';
+    protected $primaryKey = 'dni';
 
     //Indicar que no es un número autoincremental
     public $incrementing = false;
@@ -15,5 +15,5 @@ class UserModel extends Model
     //Indicar que el tipo de la clave es un string
     protected $keyType = 'string';
 
-    protected $fillable = ['Dni', 'Name', 'Email', 'Password'];
+    protected $fillable = ['name', 'dni', 'email', 'password'];
 }

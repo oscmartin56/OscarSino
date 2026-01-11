@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_models', function (Blueprint $table) {
-            $table->string('Dni')->primary();            
-            $table->string('Name');
-            $table->string('Email');
-            $table->string('Password');
+            $table->string('dni')->primary();            
+            $table->string('name');
+            $table->string('email');
+            $table->string('password');
             $table->timestamps();
         });
     }
