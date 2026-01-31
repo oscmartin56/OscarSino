@@ -52,7 +52,7 @@ services:
     container_name: casino-phpmyadmin
     restart: always
     ports:
-      - "8080:80" 
+      - "8081:80" 
     environment:
       PMA_HOST: casino-db 
       PMA_PORT: 3306 
